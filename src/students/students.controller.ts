@@ -1,4 +1,4 @@
-import { Body, Controller, Post,Get,Param } from "@nestjs/common";
+import { Body, Controller, Post,Get,Param, Patch,Delete } from "@nestjs/common";
 import { StudentsService } from "./students.service";
 
 @Controller('students')
@@ -31,4 +31,25 @@ export class StudentsController {
     {
         return this.studentService.getSingleStudent(rollnumber);
     }
+
+    @Patch(':rollnumber')
+    updateStudent(
+        @Body('name') name: string,
+        @Param('rollnumber') rollnumber: number,
+        @Body('department') department: string,
+        @Body('email') email: string,
+        @Body('phonenumber') phonenumber: number,
+        @Body('place') place: string,
+        @Body('semester') semester: number
+    ){
+        this.studentService.updateStudent(name,rollnumber,department,email,phonenumber,place,semester)
+        return null;
+    }
+
+    @Delete(':rollnumber')
+    deleteStudent(@Param('rollnumber') rollnumber:number){
+        this.studentService.deleteStudent(rollnumber);
+        return null;
+    }
+
 }

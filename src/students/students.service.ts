@@ -18,15 +18,52 @@ export class StudentsService {
 
     getSingleStudent(rollnumber:number) {
         
-        const student = this.students.find((stud)=> stud.rollnumber == rollnumber);
+        const student = this.findStudent(rollnumber)[0]
+            return {...student};
+        
+    }
+
+    updateStudent(name: string, rollnumber: number, department: string, email: string, phonenumber: number, place: string, semester: number){
+
+        const [student,index] = this.findStudent(rollnumber)
+        const updateStudent = {...student}
+
+        if(name){
+            updateStudent.name=name;
+        }
+        if(department){
+            updateStudent.department=department;
+        }
+        if(email){
+            updateStudent.email=email;
+        }
+        if(phonenumber){
+            updateStudent.phonenumber=phonenumber;
+        }
+        if(place){
+            updateStudent.place=place;
+        }
+        if(semester){
+            updateStudent.semester=semester
+        }
+
+        this.students[index]=updateStudent;
+
+    }
+
+    deleteStudent(rollnumber:number){
+        const index = this.findStudent(rollnumber)[1];
+        this.students.splice(index,1);
+    }
+
+    private findStudent(rollnumber:number) : [Student , number]{
+        const studentIndex = this.students.findIndex((stud)=> stud.rollnumber == rollnumber);
+        const student = this.students[studentIndex]
         if(!student)
         {
             throw new NotFoundException('could not found student');
         }
-        else{
-            return {...student};
-        }
-        
+        return [student,studentIndex]
     }
 
 
